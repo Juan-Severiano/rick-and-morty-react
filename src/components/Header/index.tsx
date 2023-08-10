@@ -4,10 +4,10 @@ export const Header = () => {
   return (
     <header className="header container d-flex justify-content-between">
       <div className="d-flex flex-row">
-        <Link to="/">asdsad</Link>
+        <Link to="/"><img className="logo-img" src={'/img/light-theme.png'} alt="Imagem do rick com o morty"></img></Link>
       </div>
       <nav className="navbar d-flex flex-row align-items-center navbar-expand-lg">
-
+        <img id="change-theme" src="/img/rick.png" alt=""></img>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -29,7 +29,3 @@ export const Header = () => {
     </header>
   )
 }
-
-const img = ['<img className="logo-img" src="/img/light-theme.png" alt="Imagem do rick com o morty">', '<img id="change-theme" src="/img/rick.png" alt="">']
-
-console.log(img)
