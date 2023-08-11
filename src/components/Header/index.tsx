@@ -1,37 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 export const Header = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const bodyRef = useRef<HTMLBodyElement>(null);
+  const imgThemeRef = useRef<Element>(null);
+  const changeElementRef = useRef<Element>(null);
 
   useEffect(() => {
-    const savedThemePreference = localStorage.getItem('themePreference');
-    if (savedThemePreference === 'dark') {
-      toggleTheme();
+    if (bodyRef.current && imgThemeRef.current && changeElementRef.current) {
+      const savedThemePreference = localStorage.getItem('themePreference');
+      if (savedThemePreference === 'dark') {
+        toggleTheme();
+      }
     }
   }, []);
 
   function toggleTheme() {
-    const body: HTMLBodyElement = document.querySelector('body');
-    const imgTheme: Element = document.querySelector('.logo-img');
-    const changeElement: Element = document.querySelector('img#change-theme');
+    if (bodyRef.current && imgThemeRef.current && changeElementRef.current) {
+      setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
+      const body = bodyRef.current;
+      const imgTheme = imgThemeRef.current as HTMLImageElement;
+      const changeElement = changeElementRef.current as HTMLImageElement;
 
-    setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
-
-    if (isDarkTheme) {
-      body.classList.add('dark-theme');
-      body.classList.remove('bg-tini-light');
-      changeElement.setAttribute('src', '/img/morty.png');
-      imgTheme.setAttribute('src', '/img/dark-theme.png');
-      localStorage.setItem('themePreference', 'dark');
-      console.log('theme dark');
-    } else {
-      body.classList.remove('dark-theme');
-      body.classList.add('bg-tini-light');
-      changeElement.setAttribute('src', '/img/rick.png');
-      imgTheme.setAttribute('src', '/img/light-theme.png');
-      localStorage.setItem('themePreference', 'light');
-      console.log('theme light');
+      if (isDarkTheme) {
+        body.classList.add('dark-theme');
+        body.classList.remove('bg-tini-light');
+        changeElement.setAttribute('src', '/img/morty.png');
+        imgTheme.setAttribute('src', '/img/dark-theme.png');
+        localStorage.setItem('themePreference', 'dark');
+        console.log('theme dark');
+      } else {
+        body.classList.remove('dark-theme');
+        body.classList.add('bg-tini-light');
+        changeElement.setAttribute('src', '/img/rick.png');
+        imgTheme.setAttribute('src', '/img/light-theme.png');
+        localStorage.setItem('themePreference', 'light');
+        console.log('theme light');
+      }
     }
   }
   return (

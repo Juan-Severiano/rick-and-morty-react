@@ -42,9 +42,17 @@ const Home = () => {
       const charactersData = charactersAll.data.results;
 
       const updatedCharacters = await Promise.all(
-        charactersData.map(async (c: {name: string}) => {
+        charactersData.map(async (c: { id: number, image: string, name: string, status: string, species: string, firstEpisodeName: string, location: { name: string } }) => {
           const firstEpisodeName = await getFirstEpisodeName(c.name);
-          return { ...c, firstEpisodeName } as Character;
+          return {
+            id: 0,
+            name: c.name,
+            firstEpisodeName: firstEpisodeName,
+            image: '',
+            status: '',
+            species: '',
+            location: { name: '' },
+          } as Character;
         })
       );
 
