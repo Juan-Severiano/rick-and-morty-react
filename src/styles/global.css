@@ -5,6 +5,10 @@
   color: #0c0c0f;
 }
 
+section {
+  min-height: 80vh;
+}
+
 .list-characters {
   margin-top: 30px;
   max-width: 1300px;
