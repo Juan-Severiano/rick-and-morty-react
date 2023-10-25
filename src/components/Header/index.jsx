@@ -20,8 +20,8 @@ export const Header = () => {
     if (bodyRef.current && imgThemeRef.current && changeElementRef.current) {
       setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
       const body = bodyRef.current;
-      const imgTheme = imgThemeRef.current as HTMLImageElement;
-      const changeElement = changeElementRef.current as HTMLImageElement;
+      const imgTheme = imgThemeRef.current;
+      const changeElement = changeElementRef.current;
 
       if (isDarkTheme) {
         body.classList.add('dark-theme');

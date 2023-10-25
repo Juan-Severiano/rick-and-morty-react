@@ -1,20 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Card } from '../Card';
+import Footer from '../Footer';
 
-interface Character {
-  id: number;
-  name: string;
-  firstEpisodeName: string;
-  // Adicione outras propriedades conforme necessário
-}
 
-const getFirstEpisodeName = async (characterName: string) => {
+const getFirstEpisodeName = async (characterName) => {
   try {
     const response = await axios.get('https://rickandmortyapi.com/api/character');
     const characters = response.data.results;
-
-    const character = characters.find((char: { name: string }) =>
+    console.log(characters)
+    const character = characters.find((char) =>
       char.name.toLowerCase() === characterName.toLowerCase()
     );
 
@@ -26,15 +21,15 @@ const getFirstEpisodeName = async (characterName: string) => {
     const firstEpisodeId = character.episode[0].split('/').pop();
     const episodeResponse = await axios.get(`https://rickandmortyapi.com/api/episode/${firstEpisodeId}`);
     const firstEpisodeName = episodeResponse.data.name;
-    return String(firstEpisodeName);
+    return firstEpisodeName;
   } catch (error) {
-    // console.error('Ocorreu um erro ao obter informações do personagem:', error.message);
+    console.error('Ocorreu um erro ao obter informações do personagem:', error.message);
     return '';
   }
 };
 
 const Home = () => {
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const [characters, setCharacters] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -42,17 +37,17 @@ const Home = () => {
       const charactersData = charactersAll.data.results;
 
       const updatedCharacters = await Promise.all(
-        charactersData.map(async (c: { id: number, image: string, name: string, status: string, species: string, firstEpisodeName: string, location: { name: string } }) => {
+        charactersData.map(async (c) => {
           const firstEpisodeName = await getFirstEpisodeName(c.name);
           return {
-            id: 0,
+            id: c.id,
             name: c.name,
             firstEpisodeName: firstEpisodeName,
-            image: '',
-            status: '',
-            species: '',
-            location: { name: '' },
-          } as Character;
+            image: c.image,
+            status: c.status,
+            species: c.species,
+            location: c.location,
+          };
         })
       );
 
@@ -62,18 +57,21 @@ const Home = () => {
     }
   };
 
-  fetchData();
+  fetchData()
 
   return (
+    <>
     <section className="d-flex flex-column align-items-center justify-content-center">
       <div>
-        <ul className="list-characters d-flex flex-wrap align-items-center justify-content-center">
+        <ul className="list-characters container d-flex flex-wrap align-items-center justify-content-center">
           {characters.map((character) => (
-            <Card {...character} />
+            <Card character={character} key={character.id} />
           ))}
         </ul>
       </div>
     </section>
+    <Footer />
+    </>
   );
 };
 
