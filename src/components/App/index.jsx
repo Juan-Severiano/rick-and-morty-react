@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from '../Card';
 import Footer from '../Footer';
 
@@ -31,33 +31,35 @@ const getFirstEpisodeName = async (characterName) => {
 const Home = () => {
   const [characters, setCharacters] = useState([]);
 
-  const fetchData = async () => {
-    try {
-      const charactersAll = await axios.get('https://rickandmortyapi.com/api/character');
-      const charactersData = charactersAll.data.results;
-
-      const updatedCharacters = await Promise.all(
-        charactersData.map(async (c) => {
-          const firstEpisodeName = await getFirstEpisodeName(c.name);
-          return {
-            id: c.id,
-            name: c.name,
-            firstEpisodeName: firstEpisodeName,
-            image: c.image,
-            status: c.status,
-            species: c.species,
-            location: c.location,
-          };
-        })
-      );
-
-      setCharacters(updatedCharacters);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  fetchData()
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const charactersAll = await axios.get('https://rickandmortyapi.com/api/character');
+        const charactersData = charactersAll.data.results;
+  
+        const updatedCharacters = await Promise.all(
+          charactersData.map(async (c) => {
+            const firstEpisodeName = await getFirstEpisodeName(c.name);
+            return {
+              id: c.id,
+              name: c.name,
+              firstEpisodeName: firstEpisodeName,
+              image: c.image,
+              status: c.status,
+              species: c.species,
+              location: c.location,
+            };
+          })
+        );
+  
+        setCharacters(updatedCharacters);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData()
+  }, [])
 
   return (
     <>
