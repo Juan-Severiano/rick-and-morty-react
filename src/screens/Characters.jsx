@@ -64,7 +64,7 @@ export default function Character () {
         <section className="d-flex flex-column align-items-center justify-content-center">
           <div>
             <ul className="list-characters container d-flex flex-wrap align-items-center justify-content-center">
-              {this.state.characters.map((character) => (
+              {characters.map((character) => (
                 <Card character={character} key={character.id} />
               ))}
             </ul>
